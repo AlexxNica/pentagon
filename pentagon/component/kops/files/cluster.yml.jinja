@@ -3,9 +3,16 @@ kind: Cluster
 metadata:
   name: {{ cluster_name }}
 spec:
-  {%- if additional_policies %}
-  additional_policies:
-   {{ additional_policies|indent(4) }}
+  {%- if node_additional_policies or master_additional_policies %}
+  additionalPolicies:
+    {%- if node_additional_policies %}
+    node: |
+      {{ node_additional_policies }}
+    {%- endif %}
+    {%- if master_additional_policies %}
+    master: |
+      {{ node_additional_policies }}
+    {%- endif %}
   {%- endif %}
   api:
     loadBalancer:
